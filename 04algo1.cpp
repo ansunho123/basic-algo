@@ -22,7 +22,7 @@ int main()
 
     int m;
 
-    // cin >> m;
+    cin >> m;
 
     auto cursor = aditor.begin();
     cout << *cursor;
