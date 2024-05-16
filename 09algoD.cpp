@@ -1,4 +1,4 @@
-// 9466번 응용문제 골드 4
+// 9466번 응용문제 G4
 
 #include <iostream>
 #include <algorithm>
