@@ -1,43 +1,45 @@
-// boj 11659
-// O(N*M)은 초과
-// O(N)에 구하는 풀이 DP
-
+// boj 12852
+// 1로 만들기 2
+// pre[n] 테이블은 어디서 계산되서 왔는지 적기. 전의 값
+// 나머지는 똑같음
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-int d[100001];
-int a[100001];
-int main()
+int d[1000005];
+int pre[1000005];
+int n;
+
+int main(void)
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-
-    int n;
-    int m;
-
-    cin >> n >> m;
-
-    for (int i = 1; i <= n; i++)
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cin >> n;
+  d[1] = 0;
+  for (int i = 2; i <= n; i++)
+  {
+    d[i] = d[i - 1] + 1;
+    pre[i] = i - 1;
+    if (i % 2 == 0 && d[i] > d[i / 2] + 1)
     {
-        cin >> a[i];
+      d[i] = d[i / 2] + 1;
+      pre[i] = i / 2;
     }
-
-    for (int i = 1; i <= n; i++)
+    if (i % 3 == 0 && d[i] > d[i / 3] + 1)
     {
-        d[i] = d[i - 1] + a[i];
-        // O(N)에 dp 채우기
+      d[i] = d[i / 3] + 1;
+      pre[i] = i / 3;
     }
+  }
 
-    while (m--)
-    {
-        int i, j;
-        cin >> i >> j;
-
-        cout << d[j] - d[i - 1] << '\n';
-        // A[i] + A[i+1] + ... A[j]
-        //(A[1] + A[2] + .. +A[j]) - (A[1] +A[2] +...A[i]);
-        // D[j] -D[i-1];
-    }
+  cout << d[n] << '\n';
+  int cur = n;
+  while (true)
+  {
+    cout << cur << ' ';
+    if (cur == 1)
+      break;
+    cur = pre[cur];
+  }
 }
