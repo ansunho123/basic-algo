@@ -1,38 +1,48 @@
-// 9461 boj
-// p(1) p(2) p(3) = 1 초기값 가지고 규칙 찾으면 금방 할 수 있음
-// p(n) = p(n-2) + p(n-3) 으로 규칙이 나옴.
+// boj 14501 퇴사
+// d[i] -> i번째 날까지 가능한 상담의 최댓값. 단 i번째가 가능하지 않다면 0이 들어감.
+// 그래서 max_element(d,d+n) 사용해야함.
 
 #include <iostream>
 #include <algorithm>
-#include <vector>
+
 using namespace std;
+int d[16];
+int p[16];
+int t[16];
 
-int t[20];
-int p[20];
-int d[20]; // i번째 일에 상담을 시작했을 때 얻을 수 있는 최대 수익
-
-int main(void)
+int main()
 {
-    ios::sync_with_stdio(0);
+
+    ios::sync_with_stdio(false);
     cin.tie(0);
 
     int n;
     cin >> n;
 
     for (int i = 1; i <= n; i++)
-        cin >> t[i] >> p[i];
-
-    for (int i = n; i >= 1; i--)
     {
-        // i번째 일에 상담을 할 수 있을 경우
-        if (i + t[i] <= n + 1)
-        {
-            // i번째 일에 상담을 했을 때와 상담을 하지 않았을 때 얻을 수 있는 수익 중 최대 수익을 취함
-            d[i] = max(d[i + t[i]] + p[i], d[i + 1]);
-        }
-        else
-            d[i] = d[i + 1];
+        cin >> t[i] >> p[i];
     }
 
-    cout << *max_element(d, d + n + 1);
+    for (int i = 1; i <= n; i++)
+    {
+        if (t[i] + i <= n + 1)
+        {
+            d[i] = p[i];
+            // 우선 현재 상담을 할 수 있는 경우 자기 시간이 최곳값.
+            // 현재 상담을 할 수 없는 경우 전의 d[i-..] 값이 최곳값. 0이 들어감.
+
+            for (int j = 1; j < i; j++)
+            {
+                if (t[j] + j <= i)
+                { // 1일차부터 i-1일차까지 가능한 경우 최댓값 갱신.
+                    d[i] = max(d[i], d[j] + p[i]);
+                }
+            }
+        }
+    }
+
+    cout << *max_element(d + 1, d + n + 1);
+
+    return 0;
 }
