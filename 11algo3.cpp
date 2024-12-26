@@ -1,26 +1,40 @@
-// 1931 boj 그리디
-// 대표적인 그리디 문제.
-// 끝나는 시간으로 정렬 후 (같으면 시작시간 빠른 순)
-// 끝나는 시간과 현재 시간에 맞게 계속 비교.
-// 끝나는 시간 작은 순으로 정렬이 되었으므로 그리디 가능.
+// boj 2217
+//  n개 중에서 k개의 로프를 선택해서 어떤 것이 중량을 가장 크게 할 수 있는지.
+//  O(2^N) 브루트 포스 시간초과
+// 그리디
+// 1) n-i = k개의 로프를 선택하는게 가장 큰 값인지
+// 2) 로프를 k 선택했을 때 가장 큰 로프 k개가 가장 큰 값.
+// O(N);
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-int n;
-int w[100005];
+int a[100002];
 
-int main(void)
+int main()
 {
-    ios::sync_with_stdio(0);
+    ios_base::sync_with_stdio(0);
     cin.tie(0);
-    cin >> n;
-    for (int i = 0; i < n; i++)
-        cin >> w[i];
-    sort(w, w + n);
+
+    int n;
     int ans = 0;
-    for (int i = 1; i <= n; i++)
-        ans = max(ans, w[n - i] * i);
+
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
+
+    sort(a, a + n);
+    for (int i = 0; i < n; i++)
+    {
+        ans = max(ans, a[i] * (n - i));
+        // 1) n-i = k개의 로프를 선택하는게 가장 큰 값인지
+        // 2) 로프를 k 선택했을 때 가장 큰 로프 k개가 가장 큰 값.
+    }
+
     cout << ans;
 }
