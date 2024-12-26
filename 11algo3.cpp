@@ -1,17 +1,16 @@
-// boj 2217
-//  n개 중에서 k개의 로프를 선택해서 어떤 것이 중량을 가장 크게 할 수 있는지.
-//  O(2^N) 브루트 포스 시간초과
+// boj 1026
+// n개의 A[N] B[n]
+// 재배열 부등식
+// ans += 최솟값 * 최댓값 ---> 최솟값이 나온다.
 // 그리디
-// 1) n-i = k개의 로프를 선택하는게 가장 큰 값인지
-// 2) 로프를 k 선택했을 때 가장 큰 로프 k개가 가장 큰 값.
-// O(N);
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-int a[100002];
+int A[52]; // 작은 수로 정렬
+int B[52]; // 큰 수로 정렬
 
 int main()
 {
@@ -19,21 +18,21 @@ int main()
     cin.tie(0);
 
     int n;
-    int ans = 0;
-
     cin >> n;
 
     for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-    }
+        cin >> A[i];
+    for (int i = 0; i < n; i++)
+        cin >> B[i];
 
-    sort(a, a + n);
+    int ans = 0;
+
+    sort(A, A + n); // 작은 수 선텍
+    sort(B, B + n); // 큰 수 선택
+
     for (int i = 0; i < n; i++)
     {
-        ans = max(ans, a[i] * (n - i));
-        // 1) n-i = k개의 로프를 선택하는게 가장 큰 값인지
-        // 2) 로프를 k 선택했을 때 가장 큰 로프 k개가 가장 큰 값.
+        ans += A[i] * B[n - 1 - i];
     }
 
     cout << ans;
