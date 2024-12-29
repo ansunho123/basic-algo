@@ -1,4 +1,4 @@
-
+// boj zz 1234
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -60,5 +60,4 @@ int main(void)
             power[cur] = true;
         }
     }
-    cout << ans;
 }
