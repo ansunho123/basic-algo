@@ -1,23 +1,33 @@
-
 #include <iostream>
 #include <algorithm>
 #include <vector>
-int a[105], b[105];
-int n;
 
+using namespace std;
+
+int tmp, ans;
+int sign = 1;
 int main(void)
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    cin >> n;
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-    for (int i = 0; i < n; i++)
-        cin >> b[i];
-    sort(a, a + n);
-    sort(b, b + n);
-    int ans = 0;
-    for (int i = 0; i < n; i++)
-        ans += a[i] * b[n - 1 - i];
+
+    string input;
+    cin >> input;
+    for (char c : input)
+    {
+        if (c == '+' || c == '-')
+        {
+            ans += tmp * sign;
+            if (c == '-')
+                sign = -1;
+            tmp = 0;
+        }
+        else
+        {
+            tmp *= 10;
+            tmp += c - '0';
+        }
+    }
+    ans += tmp * sign;
     cout << ans;
 }
