@@ -5,7 +5,7 @@
 // 1) n-i = k개의 로프를 선택하는게 가장 큰 값인지
 // 2) 로프를 k 선택했을 때 가장 큰 로프 k개가 가장 큰 값.
 // O(N);
-
+// 11algo3 이랑 위치가 바뀜.
 #include <iostream>
 #include <algorithm>
 #include <vector>
