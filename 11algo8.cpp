@@ -1,43 +1,64 @@
+// boj 11501 주식
+// 처음 생각
+// stock[d] < stock[d+1]이면, 주식을 산다.
+// stock[d] > stock[d+1]이면, 주식을 판다.
+// stock[d] == stock[d+1]이면 아무것도 안 한다. -> 실패
+// stock[i] < stock[k]인 m이 존재하면, i일에 주식을 사고 k일에 주식을 판다. (단 i<k)
+// stock[i] < stock[k]인 m이 없으면 -> 아무것도 안한다. 두가지만 구현 하면 된다.
+// d[N] ->  d[i]는 d[i]부터 m[n-1] 까지 중 가장 큰 수의 idx 저장
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-#define X first
-#define Y second
+long long stock[1000010];
 
-int main(void)
+int main()
 {
-    ios::sync_with_stdio(0);
+    ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n;
-    cin >> n;
-    vector<pair<int, int>> flower;
-    for (int i = 0; i < n; i++)
-    {
-        int sm, sd, em, ed;
-        cin >> sm >> sd >> em >> ed;
-        flower.push_back({sm * 100 + sd, em * 100 + ed}); // 날짜는 대충 파싱해도 됨
-    }
 
-    int t = 301; // 현재 시간
-    int ans = 0; // 선택한 꽃의 개수
-    while (t < 1201)
+    int t;
+
+    cin >> t;
+
+    while (t--)
     {
-        int nxt_t = t; // 이번에 추가할 꽃으로 인해 변경된 시간
+        int n;
+        cin >> n;
+
+        fill(stock, stock + n, 0);
+
         for (int i = 0; i < n; i++)
+            cin >> stock[i];
+
+        int d[1000010];   // d[i]는 d[i]부터 m[n-1] 까지 중 가장 큰 수의 idx 저장
+        d[n - 1] = n - 1; // 마지막 날은 자기 자신
+
+        for (int i = n - 2; i >= 0; i--)
         {
-            if (flower[i].X <= t && flower[i].Y > nxt_t)
-                nxt_t = flower[i].Y;
+            if (stock[i] > stock[d[i + 1]])
+            {
+                // 현재가 뒤에 나올 주가보다 클 때.
+                d[i] = i;
+            }
+            else
+            { // 현재보다 뒤에 더 큰 주가가 나올 때.
+                d[i] = d[i + 1];
+            }
         }
-        if (nxt_t == t)
-        { // 시간 t에서 더 전진이 불가능
-            cout << 0;
-            return 0;
+
+        long long ans = 0;
+
+        for (int i = 0; i < n; i++)
+        { // stock[i] < stock[k]인 m이 존재하면, i일에 주식을 사고 k일에 주식을 판다. (단 i<k)
+
+            if (stock[i] < stock[d[i]])
+            {
+                ans += stock[d[i]] - stock[i];
+            }
         }
-        ans++;
-        t = nxt_t;
+        cout << ans << '\n';
     }
-    cout << ans;
 }
