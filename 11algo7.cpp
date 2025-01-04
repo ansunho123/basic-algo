@@ -1,43 +1,63 @@
+// boj 1541
+//-를 만나면 그 순간부터 다 빼주면 된다.
+// 55-(50+40+30)-(20+10) 이므로
+// 햇갈리는 점 -> - 만나고 어디서 flag=0이 되는지 햇갈렸는데.
+//-만나고 +만나도 빼주고
+//-만나고 -를 만나도 뺴주기 때문에 -를 만난 순간 부터 다 -해주기.
 
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-#define X first
-#define Y second
-
-int main(void)
+int main()
 {
-    ios::sync_with_stdio(0);
+    ios_base::sync_with_stdio(0);
     cin.tie(0);
-    int n;
-    cin >> n;
-    vector<pair<int, int>> flower;
-    for (int i = 0; i < n; i++)
+
+    string str;
+    int ans = 0;
+    bool flag = 0;   // -만난지 여부
+    int a = 0;       // 숫자 계산용
+    string num = ""; // 숫자 계산용.
+
+    cin >> str;
+
+    for (char c : str)
     {
-        int sm, sd, em, ed;
-        cin >> sm >> sd >> em >> ed;
-        flower.push_back({sm * 100 + sd, em * 100 + ed}); // 날짜는 대충 파싱해도 됨
+        if (c == '+' || c == '-')
+        { // 기호를 만나면 지금까지 숫자 계산.
+            a = stoi(num);
+            num = "";
+            if (flag == 0)
+            { // 앞에 -가 없었으므로 +해주기.
+                ans += a;
+                if (c == '-')
+                { //-를 만났다는 신호.
+                    flag = 1;
+                }
+            }
+            else if (flag == 1)
+            { //-를 만났으면 다 뺴주기.
+                ans -= a;
+            }
+        }
+        else
+        {
+            num += c;
+        }
     }
 
-    int t = 301; // 현재 시간
-    int ans = 0; // 선택한 꽃의 개수
-    while (t < 1201)
+    // 마지막 숫자 계산.
+    a = stoi(num);
+    if (flag == 1)
     {
-        int nxt_t = t; // 이번에 추가할 꽃으로 인해 변경된 시간
-        for (int i = 0; i < n; i++)
-        {
-            if (flower[i].X <= t && flower[i].Y > nxt_t)
-                nxt_t = flower[i].Y;
-        }
-        if (nxt_t == t)
-        { // 시간 t에서 더 전진이 불가능
-            cout << 0;
-            return 0;
-        }
-        ans++;
-        t = nxt_t;
+        ans -= a;
     }
+    else
+    {
+        ans += a;
+    }
+
     cout << ans;
 }
