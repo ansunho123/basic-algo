@@ -1,43 +1,85 @@
-
+// boj 1744
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-#define X first
-#define Y second
+vector<int> positive;
+vector<int> negative;
+int ans = 0;
+bool zero; // 0이 있는지 없는지
 
-int main(void)
+int main()
 {
-    ios::sync_with_stdio(0);
+    ios_base::sync_with_stdio(0);
     cin.tie(0);
     int n;
     cin >> n;
-    vector<pair<int, int>> flower;
+
     for (int i = 0; i < n; i++)
     {
-        int sm, sd, em, ed;
-        cin >> sm >> sd >> em >> ed;
-        flower.push_back({sm * 100 + sd, em * 100 + ed}); // 날짜는 대충 파싱해도 됨
+        int num;
+        cin >> num;
+        if (num == 1)
+        {
+            ans += 1;
+        }
+        else if (num > 1)
+        {
+            positive.push_back(num);
+        }
+        else if (num == 0)
+        {
+            zero = 1;
+        }
+        else
+        {
+            negative.push_back(num);
+        }
     }
 
-    int t = 301; // 현재 시간
-    int ans = 0; // 선택한 꽃의 개수
-    while (t < 1201)
-    {
-        int nxt_t = t; // 이번에 추가할 꽃으로 인해 변경된 시간
-        for (int i = 0; i < n; i++)
-        {
-            if (flower[i].X <= t && flower[i].Y > nxt_t)
-                nxt_t = flower[i].Y;
-        }
-        if (nxt_t == t)
-        { // 시간 t에서 더 전진이 불가능
-            cout << 0;
-            return 0;
-        }
-        ans++;
-        t = nxt_t;
+    // 양수 내림차순 5 4 3
+    sort(positive.begin(), positive.end(), greater<int>());
+    // 음수 오름차순 -5 -4 -3
+    sort(negative.begin(), negative.end(), less<int>());
+
+    if (positive.size() % 2 == 0)
+    { // 양수가 짝수개라면 다 곱하고 더해주기.
+        for (int i = 0; i < positive.size(); i += 2)
+            s
+            {
+                ans += positive[i] * positive[i + 1];
+            }
     }
+    else
+    { // 양수가 홀수개라면 마지막꺼 전까지 다 곱해주고
+        for (int i = 0; i < positive.size() - 1; i += 2)
+        {
+            ans += positive[i] * positive[i + 1];
+        }
+        // 마지막은 더해주기.
+        ans += positive[positive.size() - 1];
+    }
+
+    if (negative.size() % 2 == 0)
+    { // 음수가 짝수개라면 다 곱하고 더해주기.
+        for (int i = 0; i < negative.size(); i += 2)
+        {
+            ans += negative[i] * negative[i + 1];
+        }
+    }
+    else
+    { // 음수가 홀수개라면 마지막꺼 전까지 다 곱해주고
+        for (int i = 0; i < negative.size() - 1; i += 2)
+        {
+            ans += negative[i] * negative[i + 1];
+        }
+        // 마지막은 더해주기. 0이 있으면 0을 더해주고 없으면 그냥 0 더해주기(넘어가기).
+        if (!zero)
+        {
+            ans += negative[negative.size() - 1];
+        }
+    }
+
     cout << ans;
 }
